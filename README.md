@@ -9,10 +9,14 @@ Object oriented programming is a method of programming that attempts to model so
 ### Instance
 **Instance:** - Objects that are constructed from a class blueprint that contain their class's methods and properties.
 
+**Instantiating:** Creating an object that is an instance of a class is called instantiating a class.
+
 #### Creating a Class
 
 ```py
 # vehicle.py
+# _name - private variable or private property or method
+# __name - 
 
 class Vehicle:
   def __init__(self, make, model, year):
@@ -20,7 +24,20 @@ class Vehicle:
     self.model = model
     self.year = year
 
-# Classes in Python can have a special __init__ method, which gets called every time you create an instance of the class (instantiate).
+car = Vehicle('Audi', '45d', 2018)
+```
+`Classes in Python can have a special __init__ method, which gets called every time you create an instance of the class (instantiate). The self keyword refers to the current class instance.`
+
+```js
+class Vehicle {
+  constructor(make, model, year) {
+    this.make = make
+    this.model = model
+    this.year = year
+  }
+}
+
+car = new Vehicle('Audi', '45d', 2018)
 ```
 
 ## Why OOP?
@@ -41,3 +58,145 @@ With object oriented programming, the goal is to *encapsulate* your code into **
 
 ## 2. Abstraction
 **Abstraction:** - Exposing only "relevant" data in a class interface, hiding private attributes and methods (aka the "inner workings") from users.
+
+## 3. Inheritance
+**Inheritance:** A key feature of OOP is the ability to define a class which inherits from another class (a "base" or "parent" class).
+
+**Example:**
+
+```py
+class User:
+  active_users = 0
+
+  def __init__(self, first, last, age):
+    self.first = first
+    self.last = last
+    self.age = max([age, 0])
+    self._secret = 'hi'
+    self.__msg = 'I like turtles!'
+    User.active_users += 1
+
+  def __repr__(self):
+    return f"{self.first} is {self.age}"
+
+  @classmethod
+  def display_active_users(cls):
+    return f"There are currently {cls.active_users} active users"
+
+  @property
+  def full_name(self):
+    return f"{self.first} {self.last}"
+
+  @full_name.setter
+  def full_name(self, name):
+    self.first, self.last = name.split(' ')
+
+  def birthday(self):
+    self.age += 1
+    return f"Happy {self.age}th, {self.first}"
+
+  def logout(self):
+    User.active_users -= 1
+    return f"{self.first} has logged out"
+
+class Moderator(User):
+  def __init__(self, first, last, age, community):
+    super().__init__(first, last, age)
+    self.community = community
+
+  def remove_post(self):
+    return f"{self.full_name()} removed a post from the {self.community} community"
+
+u1 = User('Tom', 'Garcia', 35)
+print(u1._User__msg)
+jasmine = Moderator('Jasmine', "O'conner", 61, 'Piano')
+print(jasmine.remove_post())
+print(User.display_active_users())
+```
+
+```js
+class User {
+  constructor(first, last, age) {
+    this.first = first
+    this.last = last
+    this.age = age
+  }
+
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`
+  }
+
+  set fullName(fullName) {
+    const names = fullName.split(' ')
+    this.firstName = names[0]
+    this.lastName = names[1]
+  }
+
+  static enrolledPerson() {
+    return 'ENROLLING PERSONS!'
+  }
+}
+
+class Cat extends Human {}
+
+const jane = new Human('Foyez', 'Ahmed', 27)
+console.log(Human.enrolledPerson())
+```
+
+## 4. Polymorphism
+**Polymorphism:** A key principle in OOP is the idea of polymorphism - an object can take on many (poly) forms (morph).
+
+**Example 1: The same class method works in a similar way for different classes**
+```py
+Cat.speak() # meow
+Dog.speak() # woof
+Human.speak() # yo
+```
+
+**Example 2: The operation works for different kinds of objects**
+```py
+sample_list = [1, 2, 3]
+sample_tuple = (1, 2, 3)
+sample_string = 'awesome'
+
+len(sample_list)
+len(sample_tuple)
+len(sample_string)
+```
+
+## Polymorphism & Inheritance
+**1. The same class method works in a similar waay for different classes**
+A common implementation of this is to have a method in a base (or parent) class that is overriden by a subclass. This is called method **overridening**.
+
+* Each subclass will have a different implementation of the method.
+* If the method is not implemented in the subclass, the version in the parent class is called instead.
+
+```py
+class Animal():
+  def speak(self):
+    raise NotImplementedError('Subclass needs to implement this method')
+
+class Dog(Animal):
+  def speak(self):
+    return 'woof'
+
+class Cat(Animal):
+  def speak(self):
+    return 'meow'
+
+class Fish(Animal):
+  pass
+
+d = Dog()
+print(d.speak())
+
+f = Fish()
+print(f.speak())
+```
+
+**2. (Polymorphism) The same operation works for different kinds of objects**
+
+```py
+8 + 2 # 10
+'8' + '2' # 82
+```
