@@ -13,6 +13,8 @@ Object oriented programming is a method of programming that attempts to model so
 
 #### Creating a Class
 
+**In Python:**
+
 ```py
 # vehicle.py
 # _name - private variable or private property or method
@@ -27,6 +29,8 @@ class Vehicle:
 car = Vehicle('Audi', '45d', 2018)
 ```
 `Classes in Python can have a special __init__ method, which gets called every time you create an instance of the class (instantiate). The self keyword refers to the current class instance.`
+
+**In Javascript:**
 
 ```js
 class Vehicle {
@@ -63,6 +67,8 @@ With object oriented programming, the goal is to *encapsulate* your code into **
 **Inheritance:** A key feature of OOP is the ability to define a class which inherits from another class (a "base" or "parent" class).
 
 **Example:**
+
+**In Python:**
 
 ```py
 class User:
@@ -113,6 +119,8 @@ jasmine = Moderator('Jasmine', "O'conner", 61, 'Piano')
 print(jasmine.remove_post())
 print(User.display_active_users())
 ```
+
+**In Javascript:**
 
 ```js// Class syntax or syntactical sugar
 // myPerson --> Person.prototype --> Object.prototype --> null
