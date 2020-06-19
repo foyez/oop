@@ -152,7 +152,7 @@ class Person {
   }
 
   // Class Method
-  // Persont.enrolledPerson()
+  // Person.enrolledPerson()
   // Used to create utility functions
   static enrolledPerson() {
     return 'ENROLLING PERSONS!'
@@ -210,8 +210,8 @@ class Student extends Person {
   }
 }
 
-const jane = new Human('Foyez', 'Ahmed', 27)
-console.log(Human.enrolledPerson())
+const jane = new Person('Foyez', 'Ahmed', 27)
+console.log(Person.enrolledPerson())
 ```
 
 ## 4. Polymorphism
