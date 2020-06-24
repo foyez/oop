@@ -81,6 +81,9 @@ class User:
 
     def __repr__(self):
         return f"{self._first_name} is {self.__age}."
+        
+    # def __str__(self):
+    #     return f"{self._first_name} is {self.__age}."
 
     @property
     def full_name(self):
@@ -124,6 +127,8 @@ class Moderator(User):
 
 generalUser = User('Foyez', 'Ahmed')
 moderator = Moderator('Sohel', 'Mahmud', 'cricket')
+
+print(generalUser)
 
 print(generalUser.__dict__)
 print(moderator.__dict__)
