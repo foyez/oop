@@ -72,52 +72,77 @@ With object oriented programming, the goal is to *encapsulate* your code into **
 
 ```py
 class User:
-  active_users = 0
+    active_users = 0
 
-  def __init__(self, first, last, age):
-    self.first = first
-    self.last = last
-    self.age = max([age, 0])
-    self._secret = 'hi'
-    self.__msg = 'I like turtles!'
-    User.active_users += 1
+    def __init__(self, first_name: str, last_name: str, age: int = 18):
+        self._first_name = first_name  # instance variable
+        self._last_name = last_name  # instance variable
+        self.__age = age
 
-  def __repr__(self):
-    return f"{self.first} is {self.age}"
+    def __repr__(self):
+        return f"{self._first_name} is {self.__age}."
 
-  @classmethod
-  def display_active_users(cls):
-    return f"There are currently {cls.active_users} active users"
+    @property
+    def full_name(self):
+        return f"{self._first_name} {self._last_name}"
 
-  @property
-  def full_name(self):
-    return f"{self.first} {self.last}"
+    @full_name.setter
+    def full_name(self, name):
+        self._first_name, self._last_name = name.split(' ')
 
-  @full_name.setter
-  def full_name(self, name):
-    self.first, self.last = name.split(' ')
+    @classmethod
+    def display_active_users(cls):
+        return f"There are currently {cls.active_users} active users"
 
-  def birthday(self):
-    self.age += 1
-    return f"Happy {self.age}th, {self.first}"
+    def description(self):
+        return f"{self._first_name} is a general user."
 
-  def logout(self):
-    User.active_users -= 1
-    return f"{self.first} has logged out"
+    def birthday(self):
+        self.__age += 1
+        return f"Happy {self.__age}th, {self._first_name}"
+
+    def login(self):
+        User.active_users += 1
+
+    def logout(self):
+        User.active_users -= 1
+        return f"{self._first_name} has logged out"
+
 
 class Moderator(User):
-  def __init__(self, first, last, age, community):
-    super().__init__(first, last, age)
-    self.community = community
+    def __init__(self, first_name, last_name, community):
+        super().__init__(first_name, last_name)
+        self.__community = community
 
-  def remove_post(self):
-    return f"{self.full_name()} removed a post from the {self.community} community"
+    # override method
+    def description(self):
+        return f"{self._first_name} is a moderator."
 
-u1 = User('Tom', 'Garcia', 35)
-print(u1._User__msg)
-jasmine = Moderator('Jasmine', "O'conner", 61, 'Piano')
-print(jasmine.remove_post())
+    def remove_post(self):
+        return f"{self.full_name} removed a post from the {self.__community} community"
+
+
+generalUser = User('Foyez', 'Ahmed')
+moderator = Moderator('Sohel', 'Mahmud', 'cricket')
+
+print(generalUser.__dict__)
+print(moderator.__dict__)
+print()
+
+print(generalUser.full_name)
+
+generalUser.full_name = 'Manam Ahmed'
+print(generalUser.full_name)
+print()
+
+print(generalUser.description())
+print(moderator.description())
+print()
+
+generalUser.login()
 print(User.display_active_users())
+
+print(moderator.remove_post())
 ```
 
 **In Javascript:**
