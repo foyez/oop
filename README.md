@@ -147,96 +147,89 @@ print(moderator.remove_post())
 
 **In Javascript:**
 
-```js// Class syntax or syntactical sugar
+```js
+// Class syntax or syntactical sugar
 // myPerson --> Person.prototype --> Object.prototype --> null
 
-// Main Class or Supper Class
-class Person {
-  constructor(firstName, lastName, age, likes = []) {
-    this.firstName = firstName
-    this.lastName = lastName
-    this.age = age
-    this.likes = likes
-  }
+const activeUsers = Symbol('activeUsers')
 
-  // Instance Method
-  getBio() {
-    let bio = `${this.firstName} is ${this.age}.`
-    this.likes.forEach(like => bio += ` he/she likes ${like}.`)
-    return bio
-  }
-
-  set fullName(fullName) {
-    const names = fullName.split(' ')
-    this.firstName = names[0]
-    this.lastName = names[1]
+class User {
+  constructor(firstName, lastName, age = 18) {
+    User[activeUsers] = 0
+    this._firstName = firstName // instance variable
+    this._lastName = lastName
+    this._age = age
   }
 
   get fullName() {
-    return `${this.firstName} ${this.lastName}`
+    return `${this._firstName} ${this._lastName}`
   }
 
-  // Class Method
-  // Person.enrolledPerson()
-  // Used to create utility functions
-  static enrolledPerson() {
-    return 'ENROLLING PERSONS!'
-  }
-}
-
-// Subclass
-class Employee extends Person {
-  constructor(firstName, lastName, age, position, likes) {
-    // need to use super() for using the properties of super class constructor
-    super(firstName, lastName, age, likes)
-    this.position = position
+  set fullName(name) {
+    ;[this._firstName, this._lastName] = name.split(' ')
   }
 
-  // Override on getBio()
-  getBio() {
-    return `${this.fullName} is a ${this.position}`
+  static display_active_users() {
+    return `There are currently ${User[activeUsers]} active users`
   }
 
-  // subclass method
-  getYearsLeft() {
-    return 65 -this.age
-  }
-}
-
-class Student extends Person {
-  constructor(firstName, lastName, grade) {
-    super(firstName, lastName)
-    this.grade = grade
-    this.tardies = 0
-    this.scores = []
+  description() {
+    return `${this._firstName} is a general user.`
   }
 
-  getBio() {
-    const status =  (this.grade >= 70) ? 'passing' : 'failing'
-    return `${this.firstName} is ${status} the class.`
+  birthday() {
+    this._age += 1
+    return `Happy ${this._age}th, ${this._firstName}`
   }
 
-  updateGrade(change) {
-    this.grade += change
+  login() {
+    User[activeUsers] += 1
   }
 
-  markLate() {
-    this.tardies += 1
-
-    if(this.tardies >= 1) {
-      return "YOU ARE EXPELLED!!!"
-    }
-    return `${this.firstName} ${this.lastName} has been late ${this.tardies} times`
-  }
-
-  addScore(score) {
-    this.scores.push(score)
-    return this.scores
+  logout() {
+    User[activeUsers] -= 1
+    return `${this._firstName} has logged out`
   }
 }
 
-const jane = new Person('Foyez', 'Ahmed', 27)
-console.log(Person.enrolledPerson())
+class Moderator extends User {
+  // js isn't strict about arity
+  constructor(firstName, community) {
+    super(firstName)
+    this._community = community
+  }
+
+  // override method
+  description() {
+    return `${this._firstName} is a moderator.`
+  }
+
+  remove_post() {
+    return `${this.fullName} removed a post from the ${this._community} community`
+  }
+}
+
+generalUser = new User('Foyez', 'Ahmed', 20)
+moderator = new Moderator('Sohel', 'cricket')
+
+console.log(generalUser.fullName)
+
+generalUser.fullName = 'Manam Ahmed'
+console.log(generalUser.fullName)
+console.log()
+
+console.log(generalUser.description())
+console.log(moderator.description())
+console.log()
+
+console.log(generalUser.birthday())
+console.log(moderator.birthday())
+console.log()
+
+generalUser.login()
+console.log(User.display_active_users())
+
+console.log(moderator.remove_post())
 ```
 
 ## 4. Polymorphism
