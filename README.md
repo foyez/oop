@@ -4,7 +4,7 @@
 Object oriented programming is a method of programming that attempts to model some process or thing in the world as a **class** or **object**.
 
 ### Class
-**Class:** - A blueprint for objects. Classes can contain methods (functions) and attributes (simmilar to keys in a dict).
+**Class:** - A blueprint for objects. Classes can contain methods (functions) and attributes (simmilar to keys in a object or dict).
 
 ### Instance
 **Instance:** - Objects that are constructed from a class blueprint that contain their class's methods and properties.
