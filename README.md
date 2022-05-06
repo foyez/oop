@@ -63,11 +63,14 @@ With object oriented programming, the goal is to *encapsulate* your code into **
 ## 2. Abstraction
 **Abstraction:** - Exposing only "relevant" or "essential" data in a class interface, hiding private attributes and methods (aka the "inner workings") from users.
 
-For example, the essential attributes for a student:
+For example, the essential attributes for a student from the perspective of academic:
 
 1. Course Name
 2. Grade
 3. Student ID
+4. Studying
+5. Doing Assignments
+6. Attending Lectures
 
 ## 3. Inheritance
 **Inheritance:** A key feature of OOP is the ability to define a class which inherits from another class (a "base" or "parent" class).
