@@ -61,7 +61,13 @@ With object oriented programming, the goal is to *encapsulate* your code into **
 * The length of the cards should be accessed via a public method called count() --i.e. Deck.count()
 
 ## 2. Abstraction
-**Abstraction:** - Exposing only "relevant" data in a class interface, hiding private attributes and methods (aka the "inner workings") from users.
+**Abstraction:** - Exposing only "relevant" or "essential" data in a class interface, hiding private attributes and methods (aka the "inner workings") from users.
+
+For example, the essential attributes for a student:
+
+1. Course Name
+2. Grade
+3. Student ID
 
 ## 3. Inheritance
 **Inheritance:** A key feature of OOP is the ability to define a class which inherits from another class (a "base" or "parent" class).
