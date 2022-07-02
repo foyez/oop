@@ -3,19 +3,25 @@
 ## What is OOP?
 Object oriented programming is a method of programming that attempts to model some process or thing in the world as a **class** or **object**.
 
-### Class
+## Class
+
+<details>
+<summary>View contents</summary>
+
 **Class:** - A blueprint for objects. Classes can contain methods (functions) and attributes (simmilar to keys in a object or dict).
 
 ### Instance
+
 **Instance:** - Objects that are constructed from a class blueprint that contain their class's methods and properties.
 
 **Instantiating:** Creating an object that is an instance of a class is called instantiating a class.
 
-#### Creating a Class
+### Creating a Class
 
 **In Python:**
 
 ```py
+
 # vehicle.py
 # _name - private variable or private property or method
 # __name - 
@@ -27,12 +33,15 @@ class Vehicle:
     self.year = year
 
 car = Vehicle('Audi', '45d', 2018)
+
 ```
+
 `Classes in Python can have a special __init__ method, which gets called every time you create an instance of the class (instantiate). The self keyword refers to the current class instance.`
 
 **In Javascript:**
 
 ```js
+
 class Vehicle {
   constructor(make, model, year) {
     this.make = make
@@ -42,25 +51,40 @@ class Vehicle {
 }
 
 car = new Vehicle('Audi', '45d', 2018)
+
 ```
+  
+</details>
 
 ## Why OOP?
+
 With object oriented programming, the goal is to *encapsulate* your code into **logical, hierarchical groupings using classes** so that you can reason about your code at higher level.
 
 ## 4 fundamental concepts of OOP
+
 1. Encapsulation
 2. Abstraction
 3. Inheritance
 4. Polymorphism
 
 ## 1. Encapsulation
+
+<details>
+<summary>View contents</summary>
+
 **Encapsulation** - the grouping of public and private attributes and methods into a programmatic class, making abstraction possible.
 
 **Example:** 
 * Let designing a Deck class, we make cards a private attribute (a list)
 * The length of the cards should be accessed via a public method called count() --i.e. Deck.count()
+  
+</details>
 
 ## 2. Abstraction
+
+<details>
+<summary>View contents</summary>
+
 **Abstraction:** - Exposing only "relevant" or "essential" data in a class interface, hiding private attributes and methods (aka the "inner workings") from users.
 
 For example, the essential attributes for a student from the perspective of academic:
@@ -71,8 +95,14 @@ For example, the essential attributes for a student from the perspective of acad
 4. Studying
 5. Doing Assignments
 6. Attending Lectures
+  
+</details>
 
 ## 3. Inheritance
+
+<details>
+<summary>View contents</summary>
+
 **Inheritance:** A key feature of OOP is the ability to define a class which inherits from another class (a "base" or "parent" class).
 
 **Example:**
@@ -246,7 +276,13 @@ console.log(User.display_active_users())
 console.log(moderator.remove_post())
 ```
 
+</details>
+
 ## 4. Polymorphism
+
+<details>
+<summary>View contents</summary>
+
 **Polymorphism:** A key principle in OOP is the idea of polymorphism - an object can take on many (poly) forms (morph).
 
 **Example 1: The same class method works in a similar way for different classes**
@@ -268,7 +304,8 @@ len(sample_string)
 ```
 
 ## Polymorphism & Inheritance
-**1. The same class method works in a similar waay for different classes**
+
+**1. The same class method works in a similar way for different classes**
 A common implementation of this is to have a method in a base (or parent) class that is overriden by a subclass. This is called method **overridening**.
 
 * Each subclass will have a different implementation of the method.
@@ -303,6 +340,8 @@ print(f.speak())
 8 + 2 # 10
 '8' + '2' # 82
 ```
+  
+</details>
 
 **3. Abstraction vs Encapsulation**
 
