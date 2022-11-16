@@ -281,16 +281,20 @@ console.log(moderator.remove_post())
 <details>
 <summary>View contents</summary>
 
-**Polymorphism:** A key principle in OOP is the idea of polymorphism - an object can take on many (poly) forms (morph).
+**Polymorphism:** The ability of an object to have different or many (poly) forms (morph) depending on the context.
 
 **Example 1: The same class method works in a similar way for different classes**
+
 ```py
 Cat.speak() # meow
 Dog.speak() # woof
 Human.speak() # yo
 ```
 
+At a high level the `speak()` method doing the same thing, but at a low level the implementation of the method is totally different.
+
 **Example 2: The operation works for different kinds of objects**
+
 ```py
 sample_list = [1, 2, 3]
 sample_tuple = (1, 2, 3)
@@ -305,6 +309,7 @@ len(sample_string)
 
 **1. The same class method works in a similar way for different classes**
 A common implementation of this is to have a method in a base (or parent) class that is overriden by a subclass. This is called method **overridening**.
+The same class method means that it have the same method signature (same name, same arguments & same return types).
 
 * Each subclass will have a different implementation of the method.
 * If the method is not implemented in the subclass, the version in the parent class is called instead.
