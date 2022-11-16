@@ -62,39 +62,37 @@ With object oriented programming, the goal is to *encapsulate* your code into **
 
 ## 4 fundamental concepts of OOP
 
-1. Encapsulation
-2. Abstraction
+1. Abstraction
+2. Encapsulation
 3. Inheritance
 4. Polymorphism
 
-## 1. Encapsulation
+## 1. Abstraction
 
 <details>
 <summary>View contents</summary>
 
-**Encapsulation** - the grouping of public and private attributes and methods into a programmatic class, making abstraction possible.
+**Abstraction:** - Abstraction captures the essential attributes and behavior based on the context, while ignores the irrelvent information.
+
+For example, the essential attributes and behavior for a student from the perspective of academic:
+
+Attributes: (Course Name, Grade, Student ID, etc.)
+Behavior: (Studying, Doing Assignments, Attending Lectures, etc.)
+
+But the hobby of a student or the favorite sports of a student is not important here.
+  
+</details>
+
+## 2. Encapsulation
+
+<details>
+<summary>View contents</summary>
+
+**Encapsulation** - Encapsulation means a sort capsule that contains something inside, some of which can be accessed from outside and some of which cannot. In programming, encapsulation means the practice of keeping fields within a class private, then providing access to those fields via public methods (e.g. getter and setter methods).
 
 **Example:** 
 * Let designing a Deck class, we make cards a private attribute (a list)
 * The length of the cards should be accessed via a public method called count() --i.e. Deck.count()
-  
-</details>
-
-## 2. Abstraction
-
-<details>
-<summary>View contents</summary>
-
-**Abstraction:** - Exposing only "relevant" or "essential" data in a class interface, hiding private attributes and methods (aka the "inner workings") from users.
-
-For example, the essential attributes for a student from the perspective of academic:
-
-1. Course Name
-2. Grade
-3. Student ID
-4. Studying
-5. Doing Assignments
-6. Attending Lectures
   
 </details>
 
@@ -343,13 +341,6 @@ print(f.speak())
   
 </details>
 
-**3. Abstraction vs Encapsulation**
+## References
 
-| Abstraction |	Encapsulation |
-| ----------- | ------------- |
-|Abstraction is the process or method of gaining the information. | While encapsulation is the process or method to contain the information. |
-| In abstraction, problems are solved at the design or interface level. | While in encapsulation, problems are solved at the implementation level. |
-| Abstraction is the method of hiding the unwanted information. | Whereas encapsulation is a method to hide the data in a single entity or unit along with a method to protect information from outside. |
-| We can implement abstraction using abstract class and interfaces.	| Whereas encapsulation can be implemented using by access modifier i.e. private, protected and public. |
-| In abstraction, implementation complexities are hidden using abstract classes and interfaces. |	While in encapsulation, the data is hidden using methods of getters and setters. |
-| The objects that help to perform abstraction are encapsulated. | Whereas the objects that result in encapsulation need not be abstracted. |
+1. [What Are OOP Concepts?](https://stackify.com/oops-concepts-in-java/)
