@@ -349,3 +349,4 @@ print(f.speak())
 ## References
 
 1. [What Are OOP Concepts?](https://stackify.com/oops-concepts-in-java/)
+2. [How to Use Object-Oriented Programming in Python – Key OOP Concepts and Interview Questions for Beginners](https://www.freecodecamp.org/news/object-oriented-programming-in-python-interview-questions/)
