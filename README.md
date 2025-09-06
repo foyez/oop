@@ -1,14 +1,21 @@
 # Object Oriented Programming
 
 ## What is OOP?
-Object oriented programming is a method of programming that attempts to model some process or thing in the world as a **class** or **object**.
+Object oriented programming is a method of creating **objects**, which can hold **data** and **methods (functions)** that work on that data.
+
+## Advantages of OOP
+
+- OOP provides a clear structure to programs
+- Makes code easier to maintain, reuse, and debug
+- Helps keep the code DRY (Don't Repeat Yourself)
+- Makes it possible to create full reusable applications with less code and shorter development time
 
 ## Class
 
 <details>
 <summary>View contents</summary>
 
-**Class:** - A blueprint for objects. Classes can contain methods (functions) and attributes (simmilar to keys in a object or dict).
+**Class:** - A blueprint for objects. A class defines what an object should look like, and an object is created based on that class.
 
 ### Instance
 
@@ -16,7 +23,7 @@ Object oriented programming is a method of programming that attempts to model so
 
 **Instantiating:** Creating an object that is an instance of a class is called instantiating a class.
 
-### Creating a Class
+### Create a Class
 
 **In Python:**
 
@@ -55,10 +62,6 @@ car = new Vehicle('Audi', '45d', 2018)
 ```
   
 </details>
-
-## Why OOP?
-
-With object oriented programming, the goal is to *encapsulate* your code into **logical, hierarchical groupings using classes** so that you can reason about your code at higher level.
 
 ## 4 fundamental concepts of OOP
 
