@@ -4,22 +4,27 @@
 ============================
 
 1. Encapsulation
-   - private/protected fields
-   - getters/setters for controlled access
+  - keep attributes private via private/protected fields
+  - access/modify them via public getters/setters for controlled access
+  - Real-life Example:
+    - A bank account -> we can deposit/withdraw, but we cannot directly open the bank's database and change our balance
+    - Access is controlled through an interface(ATM/banking app)
 
 2. Abstraction
-   - abstract classes / methods
+  - Hide implementation details, expose essential features
+  - achieved via abstract classes / methods
 
 3. Inheritance
-   - extends keyword for reusing code
+  - reuse properties & behaviors of a base (parent) class
+  - Derived (child) classes extend functionality
 
 4. Polymorphism
-   - Method overriding
-   - Same interface, different implementations
+  - Method overriding
+  - Same interface, different implementations
 
 5. Constructors & Destructors
-   - Constructors exist
-   - Destructors don't (GC handled by JS/TS runtime)
+  - Constructors exist
+  - Destructors don't (GC handled by JS/TS runtime)
 
 */
 
