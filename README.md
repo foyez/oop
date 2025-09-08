@@ -414,6 +414,59 @@ class Bike extends Vehicle {
 - Car driver → presses “start” button or turns a key, without knowing how the ignition system, spark plugs, or fuel injection work.
 - Only essential action exposed: “start the engine”.
 
+```ts
+interface Engine {
+  start(): void;
+}
+
+class PetrolEngine implements Engine {
+  start(): void {
+    console.log("Petrol engine starts...");
+  }
+}
+
+class ElectricEngine implements Engine {
+  start(): void {
+    console.log("Electric engine starts...");
+  }
+}
+
+class Car {
+  constructor(private engine: Engine) {}
+
+  drive() {
+    this.engine.start();
+    console.log("Car drives...");
+  }
+}
+
+const tesla = new Car(new ElectricEngine());
+tesla.drive();
+// Abstraction: the Car only knows it has an Engine (interface), not which type.
+```
+
+**Real-Life Example:**
+
+- A USB port — your laptop doesn’t care if you plug in a mouse, keyboard, or flash drive. It only knows “anything that implements USB works”.
+
+```cpp
+#include <iostream>
+#include <stack>
+
+int main() {
+  stack<int> s; // Stack = Abstract Data type
+  s.push(10);
+  s.push(20);
+  std::cout << s.top() << endl; // 20
+}
+// We don't know (or care) how stack is implement internally
+// — array? linked list? Doesn’t matter.
+```
+
+**Real-Life Example:**
+
+- ATM machine → you interact with screen & buttons, but don’t know whether it uses SQL database or blockchain inside.
+
 ### 3. Inheritance
 
 **Definition:**
@@ -451,6 +504,7 @@ Definition:
 Performing the same action in different ways (many forms).
 
 - Method overriding
+- Method/Operator overloading
 - Same interface, different implementations
 
 ```ts
@@ -461,6 +515,7 @@ class Animal {
 }
 
 class Dog extends Animal {
+  // method overriding (runtime Polymorphism)
   makeSound(): void {
     console.log("Woof!");
   }
@@ -481,6 +536,25 @@ function playSound(animal: Animal) {
 
 - Remote control button → the same “power” button turns on the TV, AC, or Projector, but each device reacts differently.
 - One action (press button), many forms (different responses).
+
+```ts
+class Calculator {
+  // function(signatures) overloading (compile-time Polymorphism)
+  add(a: number, b: number): number;
+  add(a: string, b: string): string;
+  add(a: any, b: any): any {
+    return a + b;
+  }
+}
+
+const calc = new Calculator();
+console.log(calc.add(2, 3)); // 5
+console.log(calc.add("Hello, ", "World")); // "Hello, World"
+```
+
+**Real-Life Example:**
+
+- A printer prints text, images, or PDFs — same "print" action, but different input forms.
 
 ### 5. Constructors & Destructors
 
