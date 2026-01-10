@@ -1,6 +1,6 @@
 # 5.3 Behavioral Design Patterns
 
-[← Back to Structural Patterns](02-structural-patterns.md) | [↑ Back to README](../README.md)
+[← Back to Structural Patterns](02-structural-patterns.md) | [Next: Common Anti-Patterns →](../06-best-practices/01-anti-patterns.md) | [↑ Back to README](../README.md)
 
 ---
 
