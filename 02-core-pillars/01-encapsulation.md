@@ -547,247 +547,163 @@ print("\n" + account.get_transaction_history())
 
 ## Practice Questions
 
+
+<details>
+<summary><strong>View Question</strong></summary>
+
 ### Fill in the Gaps (FG)
 
-<details>
-<summary><strong>Question 1</strong></summary>
+1. Encapsulation combines two concepts: __________ (grouping data and methods together) and __________ (restricting direct access to data).
+2. In Python, a variable named `__balance` uses __________ to make it pseudo-private, while `_balance` is a __________ indicating it should be treated as protected.
+3. The `@property` decorator in Python creates a __________, while the `@variable.setter` decorator creates a __________.
+4. In TypeScript and C++, the __________ access modifier makes members accessible only within the class, while __________ allows access in subclasses as well.
+5. Encapsulation helps prevent __________ modification of internal state and provides __________ access through public methods.
 
-Encapsulation combines two concepts: __________ (grouping data and methods together) and __________ (restricting direct access to data).
-
-**Answer**: Bundling, Data Hiding (or Information Hiding)
-</details>
-
-<details>
-<summary><strong>Question 2</strong></summary>
-
-In Python, a variable named `__balance` uses __________ to make it pseudo-private, while `_balance` is a __________ indicating it should be treated as protected.
-
-**Answer**: Name mangling, Convention
-</details>
+### Answers
 
 <details>
-<summary><strong>Question 3</strong></summary>
+<summary><strong>View Answers</strong></summary>
 
-The `@property` decorator in Python creates a __________, while the `@variable.setter` decorator creates a __________.
+1. Bundling, Data Hiding (or Information Hiding)
+2. Name mangling, Convention
+3. Getter, Setter
+4. private, protected
+5. Accidental (or Direct/Unauthorized), Controlled (or Safe/Validated)
 
-**Answer**: Getter, Setter
-</details>
-
-<details>
-<summary><strong>Question 4</strong></summary>
-
-In TypeScript and C++, the __________ access modifier makes members accessible only within the class, while __________ allows access in subclasses as well.
-
-**Answer**: private, protected
-</details>
-
-<details>
-<summary><strong>Question 5</strong></summary>
-
-Encapsulation helps prevent __________ modification of internal state and provides __________ access through public methods.
-
-**Answer**: Accidental (or Direct/Unauthorized), Controlled (or Safe/Validated)
 </details>
 
 ### True or False (TF)
 
+1. Python has true private variables that cannot be accessed from outside the class under any circumstances.
+2. Getters and setters are only useful for validation; they serve no other purpose.
+3. In TypeScript, private members are enforced at runtime and will cause errors if accessed from outside the class.
+4. Encapsulation and data hiding are exactly the same thing.
+5. Using properties instead of direct attribute access makes your code more maintainable because you can change the internal implementation without affecting external code.
+6. Protected members (with single underscore in Python) are strictly enforced and cannot be accessed from outside the class.
+7. Encapsulation helps prevent bugs by ensuring data can only be modified through controlled methods.
+
+### Answers
+
 <details>
-<summary><strong>Question 1</strong></summary>
+<summary><strong>View Answers</strong></summary>
 
-**Statement**: Python has true private variables that cannot be accessed from outside the class under any circumstances.
+1. **False** (Python uses name mangling for variables starting with double underscores (like `__balance`), but they can still be accessed using `_ClassName__variable`. Python relies on conventions rather than strict enforcement.)
+2. **False** (Getters and setters also enable: computed properties, backwards compatibility, logging, notifications, lazy loading, and maintaining invariants. Validation is just one of many uses.)
+3. **False** (TypeScript's private modifier is a compile-time check only. Once compiled to JavaScript, the restrictions are removed and the members become accessible. However, the TypeScript compiler will prevent you from writing code that violates access modifiers.)
+4. **False** (Data hiding is a component of encapsulation. Encapsulation includes both bundling data with methods AND hiding internal details, while data hiding specifically refers to restricting direct access to data.)
+5. **True** (Properties provide an abstraction layer. You can change how data is stored internally (e.g., switching from Celsius to Kelvin) without changing the external interface, as long as the property interface remains the same.)
+6. **False** (In Python, single underscore (`_variable`) is purely a convention indicating "internal use." It doesn't prevent access; it's a signal to other developers that the member is intended for internal use only.)
+7. **True** (By forcing all modifications to go through methods (setters), you can add validation, logging, and maintain data integrity. This prevents invalid states and makes debugging easier.)
 
-**Answer**: False
-
-**Explanation**: Python uses name mangling for variables starting with double underscores (like `__balance`), but they can still be accessed using `_ClassName__variable`. Python relies on conventions rather than strict enforcement.
 </details>
 
-<details>
-<summary><strong>Question 2</strong></summary>
-
-**Statement**: Getters and setters are only useful for validation; they serve no other purpose.
-
-**Answer**: False
-
-**Explanation**: Getters and setters also enable: computed properties, backwards compatibility, logging, notifications, lazy loading, and maintaining invariants. Validation is just one of many uses.
-</details>
-
-<details>
-<summary><strong>Question 3</strong></summary>
-
-**Statement**: In TypeScript, private members are enforced at runtime and will cause errors if accessed from outside the class.
-
-**Answer**: False
-
-**Explanation**: TypeScript's private modifier is a compile-time check only. Once compiled to JavaScript, the restrictions are removed and the members become accessible. However, the TypeScript compiler will prevent you from writing code that violates access modifiers.
-</details>
-
-<details>
-<summary><strong>Question 4</strong></summary>
-
-**Statement**: Encapsulation and data hiding are exactly the same thing.
-
-**Answer**: False
-
-**Explanation**: Data hiding is a component of encapsulation. Encapsulation includes both bundling data with methods AND hiding internal details, while data hiding specifically refers to restricting direct access to data.
-</details>
-
-<details>
-<summary><strong>Question 5</strong></summary>
-
-**Statement**: Using properties instead of direct attribute access makes your code more maintainable because you can change the internal implementation without affecting external code.
-
-**Answer**: True
-
-**Explanation**: Properties provide an abstraction layer. You can change how data is stored internally (e.g., switching from Celsius to Kelvin) without changing the external interface, as long as the property interface remains the same.
-</details>
-
-<details>
-<summary><strong>Question 6</strong></summary>
-
-**Statement**: Protected members (with single underscore in Python) are strictly enforced and cannot be accessed from outside the class.
-
-**Answer**: False
-
-**Explanation**: In Python, single underscore (`_variable`) is purely a convention indicating "internal use." It doesn't prevent access; it's a signal to other developers that the member is intended for internal use only.
-</details>
-
-<details>
-<summary><strong>Question 7</strong></summary>
-
-**Statement**: Encapsulation helps prevent bugs by ensuring data can only be modified through controlled methods.
-
-**Answer**: True
-
-**Explanation**: By forcing all modifications to go through methods (setters), you can add validation, logging, and maintain data integrity. This prevents invalid states and makes debugging easier.
 </details>
 
 ### Multiple Choice Questions (MCQ)
 
+
+1. What happens when you try to access `obj.__private` in Python where `__private` is defined in the class?
+
+    A) It works normally  
+    B) AttributeError is raised  
+    C) A warning is printed  
+    D) It returns None  
+
+2. Which of the following is NOT a benefit of encapsulation?
+
+    A) Data protection  
+    B) Controlled access to data  
+    C) Faster code execution  
+    D) Easier maintenance  
+
+3. In the following code, what is `balance`?
+
+    ```python
+    class Account:
+        @property
+        def balance(self):
+            return self.__balance
+    ```
+
+    A) A method  
+    B) A getter  
+    C) A setter  
+    D) An attribute  
+
+4. What's the main difference between public and private access modifiers?
+
+    A) Private members are slower  
+    B) Public members can be accessed from anywhere; private members only within the class  
+    C) Private members can't have methods  
+    D) Public members can't be modified  
+
+5. Why would you use a setter method instead of allowing direct attribute access?
+
+    A) To make code slower  
+    B) To add validation and control how values are set  
+    C) Because it's required by Python  
+    D) To make code more complex  
+
+6. Which Python naming convention indicates a protected member?
+
+    A) `__name`  
+    B) `_name`  
+    C) `name_`  
+    D) `name__`  
+
+7. What is a computed property?
+
+    A) A property that is calculated from other data  
+    B) A property that uses a computer  
+    C) A property that is always changing  
+    D) A property stored in a database  
+
+8. In C++, which section contains members accessible to everyone?
+
+    A) private  
+    B) protected  
+    C) public  
+    D) internal  
+
+### Answers
+
 <details>
-<summary><strong>Question 1</strong></summary>
+<summary><strong>View Answers</strong></summary>
 
-What happens when you try to access `obj.__private` in Python where `__private` is defined in the class?
-
-A) It works normally  
-B) AttributeError is raised  
-C) A warning is printed  
-D) It returns None  
-
-**Answer**: B) AttributeError is raised
+1. B) AttributeError is raised
 
 **Explanation**: Double underscore prefixes trigger name mangling in Python, changing `__private` to `_ClassName__private`. Accessing `obj.__private` directly causes an AttributeError, though you can still access it via `obj._ClassName__private`.
-</details>
 
-<details>
-<summary><strong>Question 2</strong></summary>
-
-Which of the following is NOT a benefit of encapsulation?
-
-A) Data protection  
-B) Controlled access to data  
-C) Faster code execution  
-D) Easier maintenance  
-
-**Answer**: C) Faster code execution
+2. C) Faster code execution
 
 **Explanation**: Encapsulation provides organization, protection, and maintainability benefits, but it doesn't inherently make code run faster. In fact, the additional method calls might add minimal overhead.
-</details>
 
-<details>
-<summary><strong>Question 3</strong></summary>
-
-In the following code, what is `balance`?
-
-```python
-class Account:
-    @property
-    def balance(self):
-        return self.__balance
-```
-
-A) A method  
-B) A getter  
-C) A setter  
-D) An attribute  
-
-**Answer**: B) A getter
+3. B) A getter
 
 **Explanation**: The `@property` decorator converts the method into a getter, allowing you to access it like an attribute (`account.balance`) while maintaining encapsulation.
-</details>
 
-<details>
-<summary><strong>Question 4</strong></summary>
-
-What's the main difference between public and private access modifiers?
-
-A) Private members are slower  
-B) Public members can be accessed from anywhere; private members only within the class  
-C) Private members can't have methods  
-D) Public members can't be modified  
-
-**Answer**: B) Public members can be accessed from anywhere; private members only within the class
+4. B) Public members can be accessed from anywhere; private members only within the class
 
 **Explanation**: Access modifiers control visibility. Public members are accessible everywhere, while private members are restricted to the class itself (and subclasses for protected).
-</details>
 
-<details>
-<summary><strong>Question 5</strong></summary>
-
-Why would you use a setter method instead of allowing direct attribute access?
-
-A) To make code slower  
-B) To add validation and control how values are set  
-C) Because it's required by Python  
-D) To make code more complex  
-
-**Answer**: B) To add validation and control how values are set
+5. B) To add validation and control how values are set
 
 **Explanation**: Setters allow you to validate input, maintain invariants, log changes, and control exactly how data is modified, preventing invalid states.
-</details>
 
-<details>
-<summary><strong>Question 6</strong></summary>
-
-Which Python naming convention indicates a protected member?
-
-A) `__name`  
-B) `_name`  
-C) `name_`  
-D) `name__`  
-
-**Answer**: B) `_name`
+6. B) `_name`
 
 **Explanation**: Single underscore prefix (`_name`) is a convention in Python indicating the member is intended for internal use. Double underscore (`__name`) triggers name mangling for pseudo-private members.
-</details>
 
-<details>
-<summary><strong>Question 7</strong></summary>
-
-What is a computed property?
-
-A) A property that is calculated from other data  
-B) A property that uses a computer  
-C) A property that is always changing  
-D) A property stored in a database  
-
-**Answer**: A) A property that is calculated from other data
+7. A) A property that is calculated from other data
 
 **Explanation**: Computed properties (like `area` in a Circle class) are derived from other attributes rather than being stored separately. They're calculated on-the-fly when accessed.
-</details>
 
-<details>
-<summary><strong>Question 8</strong></summary>
-
-In C++, which section contains members accessible to everyone?
-
-A) private  
-B) protected  
-C) public  
-D) internal  
-
-**Answer**: C) public
+8. C) public
 
 **Explanation**: In C++, members declared in the `public:` section can be accessed from anywhere - inside the class, in derived classes, and from external code.
+
+</details>
+
 </details>
 
 ### Code Challenges (CC)

@@ -29,11 +29,15 @@
   - Interfaces & Protocols
   - Real-world Applications
   
-- [2.3 Inheritance](02-core-pillars/03-inheritance.md)
+- [2.3 Inheritance - Part 1](02-core-pillars/03-inheritance-part1.md)
   - Code Reuse & Relationships
-  - Types of Inheritance
+  - Basic Inheritance
   - Method Overriding
+  
+- [2.3 Inheritance - Part 2](02-core-pillars/03-inheritance-part2.md)
+  - Multiple Inheritance
   - Diamond Problem & MRO
+  - Advanced Topics
   
 - [2.4 Polymorphism](02-core-pillars/04-polymorphism.md)
   - Many Forms Concept
@@ -65,6 +69,12 @@
   - When to Use Each
 
 ### 5. Design Patterns
+- [5.0 Introduction to Design Patterns](05-design-patterns/00-introduction.md)
+  - What are Design Patterns?
+  - Why They're Important
+  - Categories (Creational, Structural, Behavioral)
+  - When to Use and When NOT to Use
+
 - [5.1 Creational Patterns](05-design-patterns/01-creational-patterns.md)
   - Factory Pattern
   - Singleton Pattern
@@ -78,43 +88,120 @@
 - [5.3 Behavioral Patterns](05-design-patterns/03-behavioral-patterns.md)
   - Strategy Pattern
   - Observer Pattern
-  - Template Method Pattern
+  - Command Pattern
 
 ### 6. Anti-Patterns & Best Practices
 - [6.1 Common Anti-Patterns](06-best-practices/01-anti-patterns.md)
-  - God Object
-  - Yo-Yo Problem
-  - Circular Dependencies
-  - Shotgun Surgery
+  - God Object / God Class
+  - Spaghetti Code
+  - Copy-Paste Programming
+  - Hard Coding
+  - Premature Optimization
   
 - [6.2 Best Practices](06-best-practices/02-best-practices.md)
-  - Code Organization
-  - Testing Strategies
-  - Refactoring Guidelines
+  - Favor Composition Over Inheritance
+  - Program to Interfaces
+  - KISS (Keep It Simple)
+  - DRY (Don't Repeat Yourself)
+  - YAGNI (You Aren't Gonna Need It)
+  - Encapsulate What Varies
+  - Law of Demeter
+  - Fail Fast
+  - Write Tests
 
 ### 7. Real-World Scenarios
-- [7.1 E-commerce System](07-real-world/01-ecommerce-system.md)
-- [7.2 Logging System](07-real-world/02-logging-system.md)
-- [7.3 Game Characters](07-real-world/03-game-characters.md)
-- [7.4 Payment Processing](07-real-world/04-payment-processing.md)
+- [7.1 E-commerce System](07-real-world/01-e-commerce-system.md)
+  - Product Catalog (Physical, Digital, Perishable)
+  - Shopping Cart & Orders
+  - Payment Processing (Strategy Pattern)
+  - Inventory Management
+  
+- [7.2 Banking System](07-real-world/02-banking-system.md)
+  - Account Types (Savings, Checking, Credit)
+  - Transactions & History
+  - ATM Operations
+  - Security & Atomic Operations
+  
+- [7.3 Logging System](07-real-world/03-logging-system.md)
+  - Multiple Log Levels
+  - Formatters (Simple, Detailed, JSON)
+  - Handlers (Console, File, Rotating)
+  - Thread-Safe Operations
+  
+- [7.4 Game Characters](07-real-world/04-game-characters.md)
+  - Composition Over Inheritance
+  - Ability System
+  - Character Classes (Warrior, Mage, Rogue)
+  - Flexible Component Architecture
 
 ### 8. Language Comparisons
-- [8.1 Python OOP Features](08-language-comparison/01-python.md)
-- [8.2 C++ OOP Features](08-language-comparison/02-cpp.md)
-- [8.3 TypeScript OOP Features](08-language-comparison/03-typescript.md)
-- [8.4 Feature Comparison Matrix](08-language-comparison/04-comparison-matrix.md)
+- [8.1 Feature Comparison Matrix](08-language-comparison/01-comparison-matrix.md)
+  - Python vs TypeScript vs C++
+  - Side-by-Side Code Examples
+  - Class Definitions & Encapsulation
+  - Inheritance & Abstract Classes
+  - Method & Operator Overloading
+  - When to Use Each Language
 
 ### 9. Interview Preparation
 - [9.1 Frequently Asked Questions](09-interview-prep/01-faq.md)
+  - 10 Essential OOP Interview Questions
+  - Detailed Answers with Examples
+  - Quick Answer Templates
+  
 - [9.2 Coding Challenges](09-interview-prep/02-coding-challenges.md)
+  - Parking Lot System Design
+  - Deck of Cards Implementation
+  - File System Hierarchy
+  - Complete Solutions with OOP Best Practices
+  
 - [9.3 System Design Questions](09-interview-prep/03-system-design.md)
+  - URL Shortener (like bit.ly)
+  - Rate Limiter (Token Bucket, Sliding Window)
+  - LRU Cache (O(1) operations)
+  - Notification System (Priority Queue)
+  - Interview Tips & Scalability Considerations
+  
 - [9.4 Common Mistakes to Avoid](09-interview-prep/04-common-mistakes.md)
+  - 10 Critical Mistakes with Examples
+  - Before/After Code Comparisons
+  - Code Review Checklist
+  - Interview Red Flags
 
 ### 10. Quick References
 - [10.1 Cheat Sheet](10-quick-reference/01-cheat-sheet.md)
+  - Four Pillars Quick Reference
+  - SOLID Principles Summary
+  - Design Patterns Cheat Sheet
+  - Common Syntax Across Languages
+  
 - [10.2 Memory Aids & Mnemonics](10-quick-reference/02-memory-aids.md)
+  - SOLID (Mnemonic for 5 principles)
+  - A PIE (Four Pillars)
+  - CSB (Design Pattern Categories)
+  - HIS-A (Composition vs Inheritance)
+  - GHOST (Anti-Patterns)
+  - KISS DRY YAGNI (Best Practices)
+  
 - [10.3 Decision Trees](10-quick-reference/03-decision-trees.md)
+  - Inheritance vs Composition Decision
+  - Abstract Class vs Interface Decision
+  - Which Design Pattern to Use
+  - Dependency Injection Strategy
+  - When to Apply SOLID Principles
+  - Error Handling Strategy
+  - Testing Strategy
+  - Code Review Checklist
+  - Refactoring Decision
+  - Performance Optimization Decision
+  - Access Modifier Decision
+  - Class Size Decision
+  
 - [10.4 Glossary](10-quick-reference/04-glossary.md)
+  - 140+ OOP Terms Defined
+  - Code Examples for Each Term
+  - Common Acronyms Table
+  - Python Symbol Reference
 
 ---
 
@@ -192,6 +279,34 @@ Day 7: Final Review
 ✅ **Progressive Difficulty** - From beginner to advanced topics  
 ✅ **Clean Navigation** - Organized structure with cross-references  
 
+## 📦 What's Included
+
+### Core Content
+- **4 Fundamental Pillars** - Encapsulation, Abstraction, Inheritance, Polymorphism
+- **5 SOLID Principles** - With real-world examples and anti-patterns
+- **9 Design Patterns** - Creational, Structural, and Behavioral patterns
+- **4 Real-World Systems** - Complete implementations (E-commerce, Banking, Logging, Game)
+- **3 Advanced Concepts** - Composition, Dependency Injection, Abstract vs Interface
+
+### Interview Preparation
+- **50+ Interview Questions** - With detailed answers
+- **3 Coding Challenges** - Parking Lot, Deck of Cards, File System
+- **4 System Design Questions** - URL Shortener, Rate Limiter, LRU Cache, Notifications
+- **10 Common Mistakes** - With before/after examples
+- **Code Review Checklist** - Complete evaluation criteria
+
+### Quick References
+- **Complete Cheat Sheet** - All syntax and patterns in one place
+- **12 Decision Trees** - Visual guides for design choices
+- **Memory Aids** - SOLID, A PIE, CSB, HIS-A, GHOST, KISS DRY YAGNI
+- **140+ Term Glossary** - Every OOP term defined with examples
+
+### Language Support
+- **Python** - Primary language with comprehensive examples
+- **TypeScript** - Modern web development perspective
+- **C++** - Systems programming and performance focus
+- **Side-by-Side Comparisons** - See differences and similarities  
+
 ---
 
 ## 💡 Quick Navigation Tips
@@ -213,15 +328,23 @@ Day 7: Final Review
 
 ---
 
-## 📊 Practice Question Distribution
+## 📊 Content Statistics
 
-Each section includes:
-- **Fill-in-the-Gaps**: 3-5 questions
-- **True/False**: 5-7 questions
-- **Multiple Choice**: 5-8 questions
-- **Code Challenges**: 2-4 problems
+**Total Files:** 33 markdown files  
+**Total Lines:** 15,000+ lines of content  
+**Code Examples:** 100+ working examples  
+**Practice Questions:** 200+ questions across all chapters  
+**Interview Questions:** 50+ detailed Q&A  
+**Design Patterns:** 9 patterns fully implemented  
+**Real-World Systems:** 4 complete system designs  
+**Glossary Terms:** 140+ defined terms  
 
-Total practice questions: **150+**
+### Practice Question Distribution
+
+- **Fill-in-the-Gaps**: 60+ questions
+- **True/False**: 70+ questions
+- **Multiple Choice**: 50+ questions
+- **Code Challenges**: 20+ problems with solutions
 
 ---
 
