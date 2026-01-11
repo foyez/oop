@@ -1,6 +1,6 @@
 # 3.1 Single Responsibility Principle (SRP)
 
-[← Back to Polymorphism](../02-core-pillars/04-polymorphism.md) | [Next: Open/Closed Principle →](02-ocp.md) | [↑ Back to README](../README.md)
+[← Back to Inroduction](00-introduction.md) | [Next: Open/Closed Principle →](02-ocp.md) | [↑ Back to README](../README.md)
 
 ---
 
@@ -542,4 +542,4 @@ print(json_formatter.format(post))
 
 ---
 
-[← Back to Polymorphism](../02-core-pillars/04-polymorphism.md) | [Next: Open/Closed Principle →](02-ocp.md) | [↑ Back to README](../README.md)
+[← Back to Inroduction](00-introduction.md) | [Next: Open/Closed Principle →](02-ocp.md) | [↑ Back to README](../README.md)

@@ -1,6 +1,6 @@
 # 2.4 Polymorphism
 
-[← Back to Inheritance Part 2](03-inheritance-part2.md) | [Next: SOLID Principles →](../03-solid-principles/01-srp.md) | [↑ Back to README](../README.md)
+[← Back to Inheritance Part 2](03-inheritance-part2.md) | [Next: SOLID Principles →](../03-solid-principles/00-introduction.md) | [↑ Back to README](../README.md)
 
 ---
 
@@ -1171,4 +1171,4 @@ for logger in loggers:
 
 ---
 
-[← Back to Inheritance Part 2](03-inheritance-part2.md) | [Next: SOLID Principles →](../03-solid-principles/01-srp.md) | [↑ Back to README](../README.md)
+[← Back to Inheritance Part 2](03-inheritance-part2.md) | [Next: SOLID Principles →](../03-solid-principles/00-introduction.md) | [↑ Back to README](../README.md)

@@ -44,6 +44,7 @@
   - Operator Overloading
 
 ### 3. SOLID Principles
+- [3.0 Introduction to SOLID Principles](03-solid-principles/00-introduction.md)
 - [3.1 Single Responsibility Principle (SRP)](03-solid-principles/01-srp.md)
 - [3.2 Open/Closed Principle (OCP)](03-solid-principles/02-ocp.md)
 - [3.3 Liskov Substitution Principle (LSP)](03-solid-principles/03-lsp.md)
