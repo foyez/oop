@@ -29,12 +29,10 @@
   - Interfaces & Protocols
   - Real-world Applications
   
-- [2.3 Inheritance - Part 1](02-core-pillars/03-inheritance-part1.md)
+- [2.3 Inheritance](02-core-pillars/03-inheritance.md)
   - Code Reuse & Relationships
   - Basic Inheritance
   - Method Overriding
-  
-- [2.3 Inheritance - Part 2](02-core-pillars/03-inheritance-part2.md)
   - Multiple Inheritance
   - Diamond Problem & MRO
   - Advanced Topics
