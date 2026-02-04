@@ -220,7 +220,7 @@ class Robot(Workable): pass  # Robots don't eat
 ```
 
 ### 🔧 Dependency Inversion Principle (DIP)
-**"Depend on abstractions, not concretions"**
+**"Depend on abstractions (interfaces, abstract classes, etc), not on concretions (specific implementations)"**
 
 High-level modules shouldn't depend on low-level modules.
 

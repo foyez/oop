@@ -6,7 +6,66 @@
 
 ## What is DIP?
 
-**"Depend on abstractions, not on concretions"**
+**"Depend on abstractions (interfaces, abstract classes, etc), not on concretions (specific implementations)"**
+
+### Simple example (non-code)
+
+**Abstraction:**
+
+> “Payment method”
+
+**Concretions:**
+
+* Credit card
+* PayPal
+* Bank transfer
+
+If your system depends on *“payment method”* instead of *“PayPal specifically”*, you can swap payment methods without rewriting everything.
+
+### Code example
+
+**Abstraction**
+
+```java
+interface PaymentService {
+    void pay(double amount);
+}
+```
+
+**Concretions**
+
+```java
+class PayPalPayment implements PaymentService {
+    public void pay(double amount) { ... }
+}
+
+class CreditCardPayment implements PaymentService {
+    public void pay(double amount) { ... }
+}
+```
+
+**Depending on the abstraction**
+
+```java
+class OrderService {
+    private PaymentService paymentService;
+
+    OrderService(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+}
+```
+
+Here, `OrderService` doesn’t care *which* payment method it gets — just that it follows the **PaymentService abstraction**.
+
+### Why this matters
+
+Depending on abstractions makes your code:
+
+* ✅ Easier to change
+* ✅ Easier to test (mock implementations)
+* ✅ Less fragile
+* ✅ More flexible and scalable
 
 ### Two key points:
 1. High-level modules should not depend on low-level modules. Both should depend on abstractions.
