@@ -17,8 +17,8 @@ SOLID is an acronym for five design principles that make software designs more u
 - [Single Responsibility Principle (SRP)](#1-single-responsibility-principle-srp)
 - [Open/Closed Principle (OCP)](#2-openclosed-principle-ocp)
 - [Liskov Substitution Principle (LSP)](#3-liskov-substitution-principle-lsp)
-- [Interface Segregation Principle (ISP)]()
-- [Dependency Inversion Principle (DIP)]()
+- [Interface Segregation Principle (ISP)](#4-interface-segregation-principle-isp)
+- [Dependency Inversion Principle (DIP)](#5-dependency-inversion-principle-dip)
 
 ---
 
@@ -4021,3 +4021,1279 @@ print("  ✓ Flexible - combine interfaces as needed")
 
 ---
 
+## 5. Dependency Inversion Principle (DIP)
+
+**Definition**: 
+1. High-level modules should not depend on low-level modules. Both should depend on abstractions.
+2. Abstractions should not depend on details. Details should depend on abstractions.
+
+**Real-world analogy**: Think of electrical outlets. Your appliances (high-level) don't depend on specific power plants (low-level). Both depend on the standard electrical interface (abstraction). You can plug any appliance into any outlet, and power can come from any source (coal, solar, nuclear). The abstraction (outlet standard) inverts the dependency.
+
+### What This Means:
+
+- **Depend on interfaces/abstractions**, not concrete implementations
+- **High-level policy** shouldn't know about low-level details
+- **Inversion**: Instead of high-level depending on low-level, both depend on abstraction
+- **Enable flexibility**: Swap implementations without changing high-level code
+
+### Why DIP Matters:
+
+- **Loose coupling**: Modules are independent
+- **Testability**: Easy to mock dependencies
+- **Flexibility**: Swap implementations easily
+- **Reusability**: High-level modules work with any implementation
+
+### Common Pattern: Dependency Injection
+
+Dependency Inversion often uses **Dependency Injection** - passing dependencies from outside rather than creating them internally.
+
+<details>
+<summary><strong>View Examples</strong></summary>
+
+```typescript
+// TypeScript - Dependency Inversion Principle
+
+// ============================================
+// BAD Example: Violating DIP
+// ============================================
+
+// Low-level module
+class MySQLDatabase {
+  connect(): void {
+    console.log("Connecting to MySQL database...");
+  }
+
+  query(sql: string): any[] {
+    console.log(`MySQL Query: ${sql}`);
+    return [{ id: 1, name: "Sample" }];
+  }
+
+  disconnect(): void {
+    console.log("Disconnecting from MySQL...");
+  }
+}
+
+// High-level module DEPENDS on low-level concrete class
+class UserRepositoryBad {
+  private database: MySQLDatabase; // ❌ Depends on concrete implementation
+
+  constructor() {
+    this.database = new MySQLDatabase(); // ❌ Creates dependency internally
+  }
+
+  findUser(id: number): any {
+    this.database.connect();
+    const results = this.database.query(`SELECT * FROM users WHERE id = ${id}`);
+    this.database.disconnect();
+    return results[0];
+  }
+
+  saveUser(user: any): void {
+    this.database.connect();
+    this.database.query(`INSERT INTO users VALUES (${user.id}, '${user.name}')`);
+    this.database.disconnect();
+  }
+}
+
+// Problems:
+// 1. UserRepository is tightly coupled to MySQLDatabase
+// 2. Can't switch to PostgreSQL without modifying UserRepository
+// 3. Hard to test - can't mock the database
+// 4. UserRepository depends on concrete implementation
+
+console.log("=== DIP Violation ===\n");
+const userRepoBad = new UserRepositoryBad();
+userRepoBad.findUser(1);
+
+// ============================================
+// GOOD Example: Following DIP
+// ============================================
+
+// Abstraction (interface) - both high and low-level depend on this
+interface Database {
+  connect(): void;
+  query(sql: string): any[];
+  disconnect(): void;
+}
+
+// Low-level module implements abstraction
+class MySQLDatabaseGood implements Database {
+  connect(): void {
+    console.log("Connecting to MySQL database...");
+  }
+
+  query(sql: string): any[] {
+    console.log(`MySQL Query: ${sql}`);
+    return [{ id: 1, name: "Sample from MySQL" }];
+  }
+
+  disconnect(): void {
+    console.log("Disconnecting from MySQL...");
+  }
+}
+
+class PostgreSQLDatabase implements Database {
+  connect(): void {
+    console.log("Connecting to PostgreSQL database...");
+  }
+
+  query(sql: string): any[] {
+    console.log(`PostgreSQL Query: ${sql}`);
+    return [{ id: 1, name: "Sample from PostgreSQL" }];
+  }
+
+  disconnect(): void {
+    console.log("Disconnecting from PostgreSQL...");
+  }
+}
+
+class MongoDatabase implements Database {
+  connect(): void {
+    console.log("Connecting to MongoDB...");
+  }
+
+  query(sql: string): any[] {
+    console.log(`MongoDB Query: ${sql}`);
+    return [{ id: 1, name: "Sample from MongoDB" }];
+  }
+
+  disconnect(): void {
+    console.log("Disconnecting from MongoDB...");
+  }
+}
+
+// High-level module depends on abstraction
+class UserRepository {
+  // ✓ Depends on abstraction, not concrete class
+  constructor(private database: Database) {
+    // ✓ Dependency injected from outside
+  }
+
+  findUser(id: number): any {
+    this.database.connect();
+    const results = this.database.query(`SELECT * FROM users WHERE id = ${id}`);
+    this.database.disconnect();
+    return results[0];
+  }
+
+  saveUser(user: any): void {
+    this.database.connect();
+    this.database.query(`INSERT INTO users VALUES (${user.id}, '${user.name}')`);
+    this.database.disconnect();
+  }
+
+  // Can easily switch database implementation
+  switchDatabase(newDatabase: Database): void {
+    this.database = newDatabase;
+  }
+}
+
+console.log("\n=== DIP Compliant ===\n");
+
+// Easy to switch implementations
+console.log("--- Using MySQL ---");
+const mysqlDb = new MySQLDatabaseGood();
+const userRepo1 = new UserRepository(mysqlDb);
+userRepo1.findUser(1);
+
+console.log("\n--- Using PostgreSQL ---");
+const postgresDb = new PostgreSQLDatabase();
+const userRepo2 = new UserRepository(postgresDb);
+userRepo2.findUser(1);
+
+console.log("\n--- Using MongoDB ---");
+const mongoDb = new MongoDatabase();
+const userRepo3 = new UserRepository(mongoDb);
+userRepo3.findUser(1);
+
+// ============================================
+// Real-World Example: Notification System
+// ============================================
+
+// BAD: High-level depends on low-level
+class EmailServiceBad {
+  sendEmail(to: string, subject: string, body: string): void {
+    console.log(`Sending email to ${to}`);
+    console.log(`Subject: ${subject}`);
+  }
+}
+
+class UserServiceBad {
+  private emailService: EmailServiceBad;
+
+  constructor() {
+    this.emailService = new EmailServiceBad(); // ❌ Tight coupling
+  }
+
+  registerUser(email: string, name: string): void {
+    console.log(`Registering user: ${name}`);
+    // Locked into email - can't add SMS, Push, etc.
+    this.emailService.sendEmail(email, "Welcome", `Welcome ${name}!`);
+  }
+}
+
+// GOOD: Both depend on abstraction
+interface NotificationService {
+  send(recipient: string, message: string): void;
+}
+
+class EmailService implements NotificationService {
+  send(recipient: string, message: string): void {
+    console.log(`📧 Email to ${recipient}: ${message}`);
+  }
+}
+
+class SMSService implements NotificationService {
+  send(recipient: string, message: string): void {
+    console.log(`📱 SMS to ${recipient}: ${message}`);
+  }
+}
+
+class PushNotificationService implements NotificationService {
+  send(recipient: string, message: string): void {
+    console.log(`🔔 Push notification to ${recipient}: ${message}`);
+  }
+}
+
+class SlackService implements NotificationService {
+  send(recipient: string, message: string): void {
+    console.log(`💬 Slack message to ${recipient}: ${message}`);
+  }
+}
+
+// High-level service depends on abstraction
+class UserService {
+  constructor(private notificationService: NotificationService) {}
+
+  registerUser(contact: string, name: string): void {
+    console.log(`Registering user: ${name}`);
+    this.notificationService.send(contact, `Welcome ${name}!`);
+  }
+
+  resetPassword(contact: string): void {
+    console.log("Password reset initiated");
+    this.notificationService.send(contact, "Your password has been reset");
+  }
+}
+
+console.log("\n=== DIP Notification System ===\n");
+
+console.log("--- Email Notifications ---");
+const emailService = new EmailService();
+const userServiceEmail = new UserService(emailService);
+userServiceEmail.registerUser("user@example.com", "Alice");
+
+console.log("\n--- SMS Notifications ---");
+const smsService = new SMSService();
+const userServiceSMS = new UserService(smsService);
+userServiceSMS.registerUser("+1234567890", "Bob");
+
+console.log("\n--- Push Notifications ---");
+const pushService = new PushNotificationService();
+const userServicePush = new UserService(pushService);
+userServicePush.registerUser("device_token_123", "Charlie");
+
+console.log("\n--- Slack Notifications ---");
+const slackService = new SlackService();
+const userServiceSlack = new UserService(slackService);
+userServiceSlack.registerUser("#general", "DevTeam");
+
+// ============================================
+// Real-World Example: Payment Processing
+// ============================================
+
+// Abstraction for payment
+interface PaymentGateway {
+  processPayment(amount: number, currency: string): boolean;
+  refund(transactionId: string, amount: number): boolean;
+}
+
+// Low-level implementations
+class StripePaymentGateway implements PaymentGateway {
+  processPayment(amount: number, currency: string): boolean {
+    console.log(`Processing $${amount} ${currency} via Stripe`);
+    console.log("Stripe API called...");
+    return true;
+  }
+
+  refund(transactionId: string, amount: number): boolean {
+    console.log(`Refunding $${amount} via Stripe (Transaction: ${transactionId})`);
+    return true;
+  }
+}
+
+class PayPalPaymentGateway implements PaymentGateway {
+  processPayment(amount: number, currency: string): boolean {
+    console.log(`Processing $${amount} ${currency} via PayPal`);
+    console.log("PayPal API called...");
+    return true;
+  }
+
+  refund(transactionId: string, amount: number): boolean {
+    console.log(`Refunding $${amount} via PayPal (Transaction: ${transactionId})`);
+    return true;
+  }
+}
+
+class SquarePaymentGateway implements PaymentGateway {
+  processPayment(amount: number, currency: string): boolean {
+    console.log(`Processing $${amount} ${currency} via Square`);
+    console.log("Square API called...");
+    return true;
+  }
+
+  refund(transactionId: string, amount: number): boolean {
+    console.log(`Refunding $${amount} via Square (Transaction: ${transactionId})`);
+    return true;
+  }
+}
+
+// Abstraction for logging
+interface Logger {
+  log(message: string): void;
+  error(message: string): void;
+}
+
+class ConsoleLogger implements Logger {
+  log(message: string): void {
+    console.log(`[LOG] ${message}`);
+  }
+
+  error(message: string): void {
+    console.error(`[ERROR] ${message}`);
+  }
+}
+
+class FileLogger implements Logger {
+  log(message: string): void {
+    console.log(`[FILE LOG] Writing to file: ${message}`);
+  }
+
+  error(message: string): void {
+    console.log(`[FILE ERROR] Writing to file: ${message}`);
+  }
+}
+
+// High-level module depends on abstractions
+class OrderService {
+  constructor(
+    private paymentGateway: PaymentGateway,
+    private logger: Logger
+  ) {}
+
+  processOrder(orderId: string, amount: number): boolean {
+    this.logger.log(`Processing order ${orderId} for $${amount}`);
+
+    try {
+      const success = this.paymentGateway.processPayment(amount, "USD");
+      
+      if (success) {
+        this.logger.log(`Order ${orderId} processed successfully`);
+      } else {
+        this.logger.error(`Order ${orderId} processing failed`);
+      }
+      
+      return success;
+    } catch (error) {
+      this.logger.error(`Exception processing order ${orderId}: ${error}`);
+      return false;
+    }
+  }
+
+  refundOrder(orderId: string, transactionId: string, amount: number): boolean {
+    this.logger.log(`Refunding order ${orderId}`);
+    
+    const success = this.paymentGateway.refund(transactionId, amount);
+    
+    if (success) {
+      this.logger.log(`Order ${orderId} refunded successfully`);
+    } else {
+      this.logger.error(`Order ${orderId} refund failed`);
+    }
+    
+    return success;
+  }
+}
+
+console.log("\n=== DIP Payment Processing ===\n");
+
+console.log("--- Stripe + Console Logger ---");
+const stripeOrder = new OrderService(new StripePaymentGateway(), new ConsoleLogger());
+stripeOrder.processOrder("ORD001", 99.99);
+
+console.log("\n--- PayPal + File Logger ---");
+const paypalOrder = new OrderService(new PayPalPaymentGateway(), new FileLogger());
+paypalOrder.processOrder("ORD002", 149.99);
+
+console.log("\n--- Square + Console Logger ---");
+const squareOrder = new OrderService(new SquarePaymentGateway(), new ConsoleLogger());
+squareOrder.processOrder("ORD003", 199.99);
+squareOrder.refundOrder("ORD003", "TXN123", 199.99);
+
+// ============================================
+// Advanced: Dependency Injection Container
+// ============================================
+
+class DIContainer {
+  private services: Map<string, any> = new Map();
+
+  register<T>(name: string, implementation: T): void {
+    this.services.set(name, implementation);
+  }
+
+  resolve<T>(name: string): T {
+    const service = this.services.get(name);
+    if (!service) {
+      throw new Error(`Service ${name} not found`);
+    }
+    return service;
+  }
+}
+
+// Usage with DI Container
+console.log("\n=== DI Container Example ===\n");
+
+const container = new DIContainer();
+
+// Register dependencies
+container.register<Database>("database", new PostgreSQLDatabase());
+container.register<NotificationService>("notification", new EmailService());
+container.register<PaymentGateway>("payment", new StripePaymentGateway());
+container.register<Logger>("logger", new ConsoleLogger());
+
+// Resolve and use
+const db = container.resolve<Database>("database");
+const userRepo = new UserRepository(db);
+userRepo.findUser(1);
+
+const notification = container.resolve<NotificationService>("notification");
+const userService = new UserService(notification);
+userService.registerUser("admin@example.com", "Admin");
+
+const payment = container.resolve<PaymentGateway>("payment");
+const logger = container.resolve<Logger>("logger");
+const orderService = new OrderService(payment, logger);
+orderService.processOrder("ORD004", 299.99);
+
+// Easy to swap implementations
+console.log("\n--- Swapping implementations ---");
+container.register<Database>("database", new MongoDatabase());
+container.register<NotificationService>("notification", new SMSService());
+
+const newDb = container.resolve<Database>("database");
+const newUserRepo = new UserRepository(newDb);
+newUserRepo.findUser(2);
+
+const newNotification = container.resolve<NotificationService>("notification");
+const newUserService = new UserService(newNotification);
+newUserService.registerUser("+9876543210", "NewUser");
+
+// ============================================
+// Key Takeaways
+// ============================================
+
+console.log("\n=== DIP Key Takeaways ===");
+console.log("Problems without DIP:");
+console.log("  ❌ High-level modules tightly coupled to low-level details");
+console.log("  ❌ Hard to swap implementations");
+console.log("  ❌ Difficult to test (can't mock dependencies)");
+console.log("  ❌ Changes to low-level modules break high-level modules");
+console.log("\nBenefits of DIP:");
+console.log("  ✓ Loose coupling - modules are independent");
+console.log("  ✓ Easy to swap implementations (MySQL → PostgreSQL)");
+console.log("  ✓ Highly testable (inject mocks)");
+console.log("  ✓ Flexible and maintainable");
+console.log("  ✓ High-level policy stable and reusable");
+```
+
+```python
+# Python - Dependency Inversion Principle
+
+from abc import ABC, abstractmethod
+from typing import Any, List, Dict, TypeVar, Generic
+
+# ============================================
+# BAD Example: Violating DIP
+# ============================================
+
+class MySQLDatabase:
+    def connect(self) -> None:
+        print("Connecting to MySQL database...")
+    
+    def query(self, sql: str) -> List[Any]:
+        print(f"MySQL Query: {sql}")
+        return [{'id': 1, 'name': 'Sample'}]
+    
+    def disconnect(self) -> None:
+        print("Disconnecting from MySQL...")
+
+class UserRepositoryBad:
+    def __init__(self):
+        self.database = MySQLDatabase()  # ❌ Tight coupling
+    
+    def find_user(self, user_id: int) -> Any:
+        self.database.connect()
+        results = self.database.query(f"SELECT * FROM users WHERE id = {user_id}")
+        self.database.disconnect()
+        return results[0]
+    
+    def save_user(self, user: dict) -> None:
+        self.database.connect()
+        self.database.query(f"INSERT INTO users VALUES ({user['id']}, '{user['name']}')")
+        self.database.disconnect()
+
+print("=== DIP Violation ===\n")
+user_repo_bad = UserRepositoryBad()
+user_repo_bad.find_user(1)
+
+# ============================================
+# GOOD Example: Following DIP
+# ============================================
+
+class Database(ABC):
+    @abstractmethod
+    def connect(self) -> None:
+        pass
+    
+    @abstractmethod
+    def query(self, sql: str) -> List[Any]:
+        pass
+    
+    @abstractmethod
+    def disconnect(self) -> None:
+        pass
+
+class MySQLDatabaseGood(Database):
+    def connect(self) -> None:
+        print("Connecting to MySQL database...")
+    
+    def query(self, sql: str) -> List[Any]:
+        print(f"MySQL Query: {sql}")
+        return [{'id': 1, 'name': 'Sample from MySQL'}]
+    
+    def disconnect(self) -> None:
+        print("Disconnecting from MySQL...")
+
+class PostgreSQLDatabase(Database):
+    def connect(self) -> None:
+        print("Connecting to PostgreSQL database...")
+    
+    def query(self, sql: str) -> List[Any]:
+        print(f"PostgreSQL Query: {sql}")
+        return [{'id': 1, 'name': 'Sample from PostgreSQL'}]
+    
+    def disconnect(self) -> None:
+        print("Disconnecting from PostgreSQL...")
+
+class MongoDatabase(Database):
+    def connect(self) -> None:
+        print("Connecting to MongoDB...")
+    
+    def query(self, sql: str) -> List[Any]:
+        print(f"MongoDB Query: {sql}")
+        return [{'id': 1, 'name': 'Sample from MongoDB'}]
+    
+    def disconnect(self) -> None:
+        print("Disconnecting from MongoDB...")
+
+class UserRepository:
+    def __init__(self, database: Database):
+        self._database = database  # ✓ Depends on abstraction
+    
+    def find_user(self, user_id: int) -> Any:
+        self._database.connect()
+        results = self._database.query(f"SELECT * FROM users WHERE id = {user_id}")
+        self._database.disconnect()
+        return results[0]
+    
+    def save_user(self, user: dict) -> None:
+        self._database.connect()
+        self._database.query(f"INSERT INTO users VALUES ({user['id']}, '{user['name']}')")
+        self._database.disconnect()
+
+print("\n=== DIP Compliant ===\n")
+
+print("--- Using MySQL ---")
+mysql_db = MySQLDatabaseGood()
+user_repo1 = UserRepository(mysql_db)
+user_repo1.find_user(1)
+
+print("\n--- Using PostgreSQL ---")
+postgres_db = PostgreSQLDatabase()
+user_repo2 = UserRepository(postgres_db)
+user_repo2.find_user(1)
+
+print("\n--- Using MongoDB ---")
+mongo_db = MongoDatabase()
+user_repo3 = UserRepository(mongo_db)
+user_repo3.find_user(1)
+
+# ============================================
+# Real-World Example: Notification System
+# ============================================
+
+class NotificationService(ABC):
+    @abstractmethod
+    def send(self, recipient: str, message: str) -> None:
+        pass
+
+class EmailService(NotificationService):
+    def send(self, recipient: str, message: str) -> None:
+        print(f"📧 Email to {recipient}: {message}")
+
+class SMSService(NotificationService):
+    def send(self, recipient: str, message: str) -> None:
+        print(f"📱 SMS to {recipient}: {message}")
+
+class PushNotificationService(NotificationService):
+    def send(self, recipient: str, message: str) -> None:
+        print(f"🔔 Push notification to {recipient}: {message}")
+
+class SlackService(NotificationService):
+    def send(self, recipient: str, message: str) -> None:
+        print(f"💬 Slack message to {recipient}: {message}")
+
+class UserService:
+    def __init__(self, notification_service: NotificationService):
+        self._notification_service = notification_service
+    
+    def register_user(self, contact: str, name: str) -> None:
+        print(f"Registering user: {name}")
+        self._notification_service.send(contact, f"Welcome {name}!")
+    
+    def reset_password(self, contact: str) -> None:
+        print("Password reset initiated")
+        self._notification_service.send(contact, "Your password has been reset")
+
+print("\n=== DIP Notification System ===\n")
+
+print("--- Email Notifications ---")
+email_service = EmailService()
+user_service_email = UserService(email_service)
+user_service_email.register_user("user@example.com", "Alice")
+
+print("\n--- SMS Notifications ---")
+sms_service = SMSService()
+user_service_sms = UserService(sms_service)
+user_service_sms.register_user("+1234567890", "Bob")
+
+print("\n--- Push Notifications ---")
+push_service = PushNotificationService()
+user_service_push = UserService(push_service)
+user_service_push.register_user("device_token_123", "Charlie")
+
+print("\n--- Slack Notifications ---")
+slack_service = SlackService()
+user_service_slack = UserService(slack_service)
+user_service_slack.register_user("#general", "DevTeam")
+
+# ============================================
+# Real-World Example: Payment Processing
+# ============================================
+
+class PaymentGateway(ABC):
+    @abstractmethod
+    def process_payment(self, amount: float, currency: str) -> bool:
+        pass
+    
+    @abstractmethod
+    def refund(self, transaction_id: str, amount: float) -> bool:
+        pass
+
+class StripePaymentGateway(PaymentGateway):
+    def process_payment(self, amount: float, currency: str) -> bool:
+        print(f"Processing ${amount} {currency} via Stripe")
+        print("Stripe API called...")
+        return True
+    
+    def refund(self, transaction_id: str, amount: float) -> bool:
+        print(f"Refunding ${amount} via Stripe (Transaction: {transaction_id})")
+        return True
+
+class PayPalPaymentGateway(PaymentGateway):
+    def process_payment(self, amount: float, currency: str) -> bool:
+        print(f"Processing ${amount} {currency} via PayPal")
+        print("PayPal API called...")
+        return True
+    
+    def refund(self, transaction_id: str, amount: float) -> bool:
+        print(f"Refunding ${amount} via PayPal (Transaction: {transaction_id})")
+        return True
+
+class SquarePaymentGateway(PaymentGateway):
+    def process_payment(self, amount: float, currency: str) -> bool:
+        print(f"Processing ${amount} {currency} via Square")
+        print("Square API called...")
+        return True
+    
+    def refund(self, transaction_id: str, amount: float) -> bool:
+        print(f"Refunding ${amount} via Square (Transaction: {transaction_id})")
+        return True
+
+class Logger(ABC):
+    @abstractmethod
+    def log(self, message: str) -> None:
+        pass
+    
+    @abstractmethod
+    def error(self, message: str) -> None:
+        pass
+
+class ConsoleLogger(Logger):
+    def log(self, message: str) -> None:
+        print(f"[LOG] {message}")
+    
+    def error(self, message: str) -> None:
+        print(f"[ERROR] {message}")
+
+class FileLogger(Logger):
+    def log(self, message: str) -> None:
+        print(f"[FILE LOG] Writing to file: {message}")
+    
+    def error(self, message: str) -> None:
+        print(f"[FILE ERROR] Writing to file: {message}")
+
+class OrderService:
+    def __init__(self, payment_gateway: PaymentGateway, logger: Logger):
+        self._payment_gateway = payment_gateway
+        self._logger = logger
+    
+    def process_order(self, order_id: str, amount: float) -> bool:
+        self._logger.log(f"Processing order {order_id} for ${amount}")
+        
+        try:
+            success = self._payment_gateway.process_payment(amount, "USD")
+            
+            if success:
+                self._logger.log(f"Order {order_id} processed successfully")
+            else:
+                self._logger.error(f"Order {order_id} processing failed")
+            
+            return success
+        except Exception as e:
+            self._logger.error(f"Exception processing order {order_id}: {e}")
+            return False
+    
+    def refund_order(self, order_id: str, transaction_id: str, amount: float) -> bool:
+        self._logger.log(f"Refunding order {order_id}")
+        
+        success = self._payment_gateway.refund(transaction_id, amount)
+        
+        if success:
+            self._logger.log(f"Order {order_id} refunded successfully")
+        else:
+            self._logger.error(f"Order {order_id} refund failed")
+        
+        return success
+
+print("\n=== DIP Payment Processing ===\n")
+
+print("--- Stripe + Console Logger ---")
+stripe_order = OrderService(StripePaymentGateway(), ConsoleLogger())
+stripe_order.process_order("ORD001", 99.99)
+
+print("\n--- PayPal + File Logger ---")
+paypal_order = OrderService(PayPalPaymentGateway(), FileLogger())
+paypal_order.process_order("ORD002", 149.99)
+
+print("\n--- Square + Console Logger ---")
+square_order = OrderService(SquarePaymentGateway(), ConsoleLogger())
+square_order.process_order("ORD003", 199.99)
+square_order.refund_order("ORD003", "TXN123", 199.99)
+
+# ============================================
+# Advanced: Dependency Injection Container
+# ============================================
+
+T = TypeVar('T')
+
+class DIContainer:
+    def __init__(self):
+        self._services: Dict[str, Any] = {}
+    
+    def register(self, name: str, implementation: Any) -> None:
+        self._services[name] = implementation
+    
+    def resolve(self, name: str) -> Any:
+        service = self._services.get(name)
+        if not service:
+            raise ValueError(f"Service {name} not found")
+        return service
+
+print("\n=== DI Container Example ===\n")
+
+container = DIContainer()
+
+# Register dependencies
+container.register("database", PostgreSQLDatabase())
+container.register("notification", EmailService())
+container.register("payment", StripePaymentGateway())
+container.register("logger", ConsoleLogger())
+
+# Resolve and use
+db = container.resolve("database")
+user_repo = UserRepository(db)
+user_repo.find_user(1)
+
+notification = container.resolve("notification")
+user_service = UserService(notification)
+user_service.register_user("admin@example.com", "Admin")
+
+payment = container.resolve("payment")
+logger = container.resolve("logger")
+order_service = OrderService(payment, logger)
+order_service.process_order("ORD004", 299.99)
+
+# Easy to swap implementations
+print("\n--- Swapping implementations ---")
+container.register("database", MongoDatabase())
+container.register("notification", SMSService())
+
+new_db = container.resolve("database")
+new_user_repo = UserRepository(new_db)
+new_user_repo.find_user(2)
+
+new_notification = container.resolve("notification")
+new_user_service = UserService(new_notification)
+new_user_service.register_user("+9876543210", "NewUser")
+
+print("\n=== DIP Key Takeaways ===")
+print("Problems without DIP:")
+print("  ❌ High-level modules tightly coupled to low-level details")
+print("  ❌ Hard to swap implementations")
+print("  ❌ Difficult to test (can't mock dependencies)")
+print("  ❌ Changes to low-level modules break high-level modules")
+print("\nBenefits of DIP:")
+print("  ✓ Loose coupling - modules are independent")
+print("  ✓ Easy to swap implementations (MySQL → PostgreSQL)")
+print("  ✓ Highly testable (inject mocks)")
+print("  ✓ Flexible and maintainable")
+print("  ✓ High-level policy stable and reusable")
+```
+
+</details>
+
+---
+
+## Practice Questions - Final SOLID Review
+
+<details>
+<summary><strong>View Questions</strong></summary>
+
+### Fill in the Blanks
+
+1. The Dependency Inversion Principle states that high-level modules should not depend on __________ modules. Both should depend on __________.
+
+2. __________ __________ is a technique where dependencies are passed to a class from outside rather than created internally.
+
+3. Without DIP, a UserRepository that creates its own MySQLDatabase instance is __________ coupled to that specific database.
+
+4. DIP enables easy __________ by allowing you to inject mock implementations during testing.
+
+5. The five SOLID principles are: __________, __________, __________, __________, and __________.
+
+<details>
+<summary><strong>View Answers</strong></summary>
+
+1. **low-level**, **abstractions** - High-level (UserRepository) shouldn't depend on low-level (MySQLDatabase). Both should depend on abstraction (Database interface).
+
+2. **Dependency Injection** - Instead of `this.db = new MySQL()` inside the class, pass it in: `constructor(db: Database)`.
+
+3. **tightly** - Creating dependencies internally creates tight coupling. Can't swap MySQL for PostgreSQL without modifying UserRepository.
+
+4. **testing** - Inject mock database/payment gateway during tests. Without DIP, testing requires real database connection.
+
+5. **Single Responsibility Principle**, **Open/Closed Principle**, **Liskov Substitution Principle**, **Interface Segregation Principle**, **Dependency Inversion Principle** (any order acceptable)
+
+</details>
+
+---
+
+### True/False
+
+1. ⬜ DIP means low-level modules should depend on high-level modules.
+
+2. ⬜ A class that creates its own dependencies (new MySQLDatabase()) violates DIP.
+
+3. ⬜ Dependency Injection and Dependency Inversion are the same thing.
+
+4. ⬜ Following DIP makes code harder to test.
+
+5. ⬜ All five SOLID principles work together to create maintainable, flexible code.
+
+<details>
+<summary><strong>View Answers</strong></summary>
+
+1. **False** - DIP inverts the dependency direction. Neither high-level nor low-level depends on the other. Both depend on abstractions (interfaces). This "inverts" the traditional top-down dependency.
+
+2. **True** - Creating dependencies internally couples the class to specific implementations. DIP requires depending on abstractions and receiving dependencies from outside (dependency injection).
+
+3. **False** - DIP is a principle (high/low-level both depend on abstractions). Dependency Injection is a technique (passing dependencies from outside) that helps achieve DIP. DI is one way to implement DIP.
+
+4. **False** - DIP makes testing EASIER. You can inject mock implementations during tests. Without DIP, you're stuck with real MySQLDatabase, EmailService, etc., making tests slow and fragile.
+
+5. **True** - SOLID principles complement each other: SRP keeps classes focused, OCP allows extension, LSP ensures correct inheritance, ISP prevents fat interfaces, DIP enables flexibility. Together they create maintainable, testable, flexible systems.
+
+</details>
+
+---
+
+### Multiple Choice
+
+1. **Which violates DIP?**
+   - A) UserRepository depends on Database interface
+   - B) UserRepository creates new MySQLDatabase() internally
+   - C) UserRepository receives Database via constructor
+   - D) UserRepository works with any Database implementation
+
+2. **What's the main benefit of DIP?**
+   - A) Faster code execution
+   - B) Less memory usage
+   - C) Loose coupling and easy substitution of implementations
+   - D) Automatic code generation
+
+3. **How do you follow DIP?**
+   - A) Create all dependencies inside the class
+   - B) Depend on concrete classes instead of interfaces
+   - C) Depend on abstractions and inject dependencies
+   - D) Avoid using interfaces
+
+4. **Which SOLID principle addresses "fat interfaces"?**
+   - A) Single Responsibility Principle
+   - B) Open/Closed Principle
+   - C) Liskov Substitution Principle
+   - D) Interface Segregation Principle
+
+5. **Which SOLID principle says "open for extension, closed for modification"?**
+   - A) Single Responsibility Principle
+   - B) Open/Closed Principle
+   - C) Liskov Substitution Principle
+   - D) Dependency Inversion Principle
+
+<details>
+<summary><strong>View Answers</strong></summary>
+
+1. **B** - Creating dependencies internally violates DIP. UserRepository is tightly coupled to MySQLDatabase. Can't swap to PostgreSQL without modifying UserRepository code. A, C, D all follow DIP.
+
+2. **C** - DIP's main benefit is loose coupling through abstractions. High-level modules stay stable while low-level implementations can be swapped freely. Also makes testing easy (inject mocks).
+
+3. **C** - Follow DIP by: (1) Depending on interfaces/abstractions, not concrete classes. (2) Injecting dependencies from outside via constructor/setter. This inverts the dependency direction.
+
+4. **D** - ISP says split large interfaces into smaller, specific ones. Don't force classes to implement methods they don't use. Better to have many small interfaces than one fat interface.
+
+5. **B** - OCP says software should be open for extension (add new features) but closed for modification (don't change existing code). Achieved through abstractions and polymorphism (e.g., adding new Shape without modifying AreaCalculator).
+
+</details>
+
+---
+
+### Code Challenge
+
+**Challenge: Refactor to follow all SOLID principles**
+
+Given this code that violates multiple SOLID principles, refactor it:
+
+```typescript
+class OrderProcessor {
+  processOrder(orderId: string, amount: number, email: string): void {
+    // Validate
+    if (amount <= 0) throw new Error("Invalid amount");
+    
+    // Process payment (tightly coupled to Stripe)
+    console.log(`Charging $${amount} via Stripe`);
+    
+    // Save to database (tightly coupled to MySQL)
+    console.log(`Saving order ${orderId} to MySQL`);
+    
+    // Send email (tightly coupled to SMTP)
+    console.log(`Sending email to ${email}`);
+    
+    // Log (multiple responsibilities)
+    console.log(`Order ${orderId} processed`);
+  }
+}
+```
+
+Refactor to follow:
+- **SRP**: Separate concerns
+- **OCP**: Allow new payment/notification methods without modification
+- **DIP**: Depend on abstractions
+
+<details>
+<summary><strong>View Solution</strong></summary>
+
+```typescript
+// TypeScript Solution - SOLID Compliant
+
+// Abstractions (DIP)
+interface PaymentGateway {
+  charge(amount: number): boolean;
+}
+
+interface OrderRepository {
+  save(orderId: string, amount: number): void;
+}
+
+interface NotificationService {
+  notify(recipient: string, message: string): void;
+}
+
+interface Logger {
+  log(message: string): void;
+}
+
+// Concrete implementations (OCP - easy to add new ones)
+class StripePaymentGateway implements PaymentGateway {
+  charge(amount: number): boolean {
+    console.log(`Charging $${amount} via Stripe`);
+    return true;
+  }
+}
+
+class PayPalPaymentGateway implements PaymentGateway {
+  charge(amount: number): boolean {
+    console.log(`Charging $${amount} via PayPal`);
+    return true;
+  }
+}
+
+class MySQLOrderRepository implements OrderRepository {
+  save(orderId: string, amount: number): void {
+    console.log(`Saving order ${orderId} ($${amount}) to MySQL`);
+  }
+}
+
+class PostgreSQLOrderRepository implements OrderRepository {
+  save(orderId: string, amount: number): void {
+    console.log(`Saving order ${orderId} ($${amount}) to PostgreSQL`);
+  }
+}
+
+class EmailNotificationService implements NotificationService {
+  notify(recipient: string, message: string): void {
+    console.log(`Sending email to ${recipient}: ${message}`);
+  }
+}
+
+class SMSNotificationService implements NotificationService {
+  notify(recipient: string, message: string): void {
+    console.log(`Sending SMS to ${recipient}: ${message}`);
+  }
+}
+
+class ConsoleLogger implements Logger {
+  log(message: string): void {
+    console.log(`[LOG] ${message}`);
+  }
+}
+
+// Validator - SRP (single responsibility)
+class OrderValidator {
+  validate(amount: number): boolean {
+    if (amount <= 0) {
+      throw new Error("Invalid amount");
+    }
+    return true;
+  }
+}
+
+// OrderProcessor - SRP (only orchestrates), DIP (depends on abstractions)
+class OrderProcessor {
+  constructor(
+    private paymentGateway: PaymentGateway,
+    private orderRepository: OrderRepository,
+    private notificationService: NotificationService,
+    private logger: Logger,
+    private validator: OrderValidator
+  ) {}
+
+  processOrder(orderId: string, amount: number, contact: string): void {
+    try {
+      // Validate
+      this.validator.validate(amount);
+      
+      // Process payment
+      const paymentSuccess = this.paymentGateway.charge(amount);
+      if (!paymentSuccess) {
+        throw new Error("Payment failed");
+      }
+      
+      // Save order
+      this.orderRepository.save(orderId, amount);
+      
+      // Send notification
+      this.notificationService.notify(contact, `Order ${orderId} confirmed`);
+      
+      // Log
+      this.logger.log(`Order ${orderId} processed successfully`);
+    } catch (error) {
+      this.logger.log(`Order ${orderId} failed: ${error.message}`);
+      throw error;
+    }
+  }
+}
+
+// Usage - easy to swap implementations
+console.log("=== SOLID Compliant OrderProcessor ===\n");
+
+console.log("--- Stripe + MySQL + Email ---");
+const processor1 = new OrderProcessor(
+  new StripePaymentGateway(),
+  new MySQLOrderRepository(),
+  new EmailNotificationService(),
+  new ConsoleLogger(),
+  new OrderValidator()
+);
+processor1.processOrder("ORD001", 99.99, "customer@example.com");
+
+console.log("\n--- PayPal + PostgreSQL + SMS ---");
+const processor2 = new OrderProcessor(
+  new PayPalPaymentGateway(),
+  new PostgreSQLOrderRepository(),
+  new SMSNotificationService(),
+  new ConsoleLogger(),
+  new OrderValidator()
+);
+processor2.processOrder("ORD002", 149.99, "+1234567890");
+```
+
+```python
+# Python Solution - SOLID Compliant
+
+from abc import ABC, abstractmethod
+
+# Abstractions (DIP)
+class PaymentGateway(ABC):
+    @abstractmethod
+    def charge(self, amount: float) -> bool:
+        pass
+
+class OrderRepository(ABC):
+    @abstractmethod
+    def save(self, order_id: str, amount: float) -> None:
+        pass
+
+class NotificationService(ABC):
+    @abstractmethod
+    def notify(self, recipient: str, message: str) -> None:
+        pass
+
+class Logger(ABC):
+    @abstractmethod
+    def log(self, message: str) -> None:
+        pass
+
+# Concrete implementations (OCP)
+class StripePaymentGateway(PaymentGateway):
+    def charge(self, amount: float) -> bool:
+        print(f"Charging ${amount} via Stripe")
+        return True
+
+class PayPalPaymentGateway(PaymentGateway):
+    def charge(self, amount: float) -> bool:
+        print(f"Charging ${amount} via PayPal")
+        return True
+
+class MySQLOrderRepository(OrderRepository):
+    def save(self, order_id: str, amount: float) -> None:
+        print(f"Saving order {order_id} (${amount}) to MySQL")
+
+class PostgreSQLOrderRepository(OrderRepository):
+    def save(self, order_id: str, amount: float) -> None:
+        print(f"Saving order {order_id} (${amount}) to PostgreSQL")
+
+class EmailNotificationService(NotificationService):
+    def notify(self, recipient: str, message: str) -> None:
+        print(f"Sending email to {recipient}: {message}")
+
+class SMSNotificationService(NotificationService):
+    def notify(self, recipient: str, message: str) -> None:
+        print(f"Sending SMS to {recipient}: {message}")
+
+class ConsoleLogger(Logger):
+    def log(self, message: str) -> None:
+        print(f"[LOG] {message}")
+
+# Validator - SRP
+class OrderValidator:
+    def validate(self, amount: float) -> bool:
+        if amount <= 0:
+            raise ValueError("Invalid amount")
+        return True
+
+# OrderProcessor - SRP, DIP
+class OrderProcessor:
+    def __init__(self, payment_gateway: PaymentGateway, 
+                 order_repository: OrderRepository,
+                 notification_service: NotificationService,
+                 logger: Logger,
+                 validator: OrderValidator):
+        self._payment_gateway = payment_gateway
+        self._order_repository = order_repository
+        self._notification_service = notification_service
+        self._logger = logger
+        self._validator = validator
+    
+    def process_order(self, order_id: str, amount: float, contact: str) -> None:
+        try:
+            # Validate
+            self._validator.validate(amount)
+            
+            # Process payment
+            payment_success = self._payment_gateway.charge(amount)
+            if not payment_success:
+                raise Exception("Payment failed")
+            
+            # Save order
+            self._order_repository.save(order_id, amount)
+            
+            # Send notification
+            self._notification_service.notify(contact, f"Order {order_id} confirmed")
+            
+            # Log
+            self._logger.log(f"Order {order_id} processed successfully")
+        except Exception as e:
+            self._logger.log(f"Order {order_id} failed: {e}")
+            raise
+
+# Usage
+print("=== SOLID Compliant OrderProcessor ===\n")
+
+print("--- Stripe + MySQL + Email ---")
+processor1 = OrderProcessor(
+    StripePaymentGateway(),
+    MySQLOrderRepository(),
+    EmailNotificationService(),
+    ConsoleLogger(),
+    OrderValidator()
+)
+processor1.process_order("ORD001", 99.99, "customer@example.com")
+
+print("\n--- PayPal + PostgreSQL + SMS ---")
+processor2 = OrderProcessor(
+    PayPalPaymentGateway(),
+    PostgreSQLOrderRepository(),
+    SMSNotificationService(),
+    ConsoleLogger(),
+    OrderValidator()
+)
+processor2.process_order("ORD002", 149.99, "+1234567890")
+```
+
+</details>
+
+</details>
+
+---
+
+## Summary
+
+The SOLID principles work together to create maintainable, flexible, testable code:
+
+1. **Single Responsibility Principle (SRP)**: One class, one responsibility
+2. **Open/Closed Principle (OCP)**: Open for extension, closed for modification
+3. **Liskov Substitution Principle (LSP)**: Subclasses must be substitutable for base classes
+4. **Interface Segregation Principle (ISP)**: Many small interfaces > one fat interface
+5. **Dependency Inversion Principle (DIP)**: Depend on abstractions, not concrete implementations
+
+**Key Takeaway**: SOLID principles aren't rules to follow blindly - they're guidelines for writing better code. Apply them when they make sense, balance them with pragmatism, and focus on creating code that's easy to understand, test, and maintain.
